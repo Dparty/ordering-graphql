@@ -5,7 +5,8 @@ go 1.21.1
 require (
 	github.com/99designs/gqlgen v0.17.39
 	github.com/Dparty/common v0.0.0-20230929033726-ff769bca8c94
-	github.com/Dparty/model v0.0.0-20231008073131-0ca596e48fb0
+	github.com/Dparty/model v0.0.0-20231008080328-f0b146d3a304
+	github.com/gin-gonic/gin v1.9.1
 	github.com/spf13/viper v1.17.0
 	github.com/vektah/gqlparser/v2 v2.5.10
 	gorm.io/gorm v1.25.4
@@ -20,7 +21,7 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-gonic/gin v1.9.1 // indirect
+	github.com/go-chi/chi v1.5.5 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.14.1 // indirect

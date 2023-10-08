@@ -5,9 +5,10 @@ import (
 )
 
 type Restaurant struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
+	ID           string `json:"id"`
+	Name         string `json:"name"`
+	Description  string `json:"description"`
+	RestaurantId uint   `json:"restaurantId"`
 }
 
 func (r *Restaurant) Tables() []*Table {
@@ -19,4 +20,8 @@ func (r *Restaurant) Tables() []*Table {
 		tables = append(tables, &table)
 	}
 	return tables
+}
+
+func (r *Restaurant) Items() []Item {
+	return []Item{}
 }

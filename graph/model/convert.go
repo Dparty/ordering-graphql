@@ -19,15 +19,17 @@ func Convert(from any) any {
 
 func RestaurantBackward(restaurant model.Restaurant) Restaurant {
 	return Restaurant{
-		ID:          utils.UintToString(restaurant.ID),
-		Name:        restaurant.Name,
-		Description: restaurant.Description,
+		ID:           utils.UintToString(restaurant.ID),
+		Name:         restaurant.Name,
+		Description:  restaurant.Description,
+		RestaurantId: restaurant.ID,
 	}
 }
 
 func TableBackward(table model.Table) Table {
 	return Table{
-		Label: table.Label,
+		Label:        table.Label,
+		RestaurantId: table.RestaurantId,
 	}
 }
 

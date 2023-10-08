@@ -6,11 +6,39 @@ package graph
 
 import (
 	"context"
+	"fmt"
+	"time"
 
+	"github.com/Dparty/common/fault"
 	"github.com/Dparty/common/utils"
+	coreModel "github.com/Dparty/model/core"
 	restaurantModel "github.com/Dparty/model/restaurant"
 	"github.com/Dparty/ordering-graphql/graph/model"
 )
+
+// CreateSession is the resolver for the createSession field.
+func (r *mutationResolver) CreateSession(ctx context.Context, email string, password string) (*model.Session, error) {
+	account, err := coreModel.FindAccountByEmail(email)
+	if err != nil {
+		return nil, err
+	}
+	if !utils.PasswordsMatch(account.Password, password, account.Salt) {
+		return nil, fault.ErrUnauthorized
+	}
+	expiredAt := time.Now().AddDate(0, 0, 7).Unix()
+	token, err := utils.SignJwt(
+		utils.UintToString(account.ID),
+		account.Email,
+		string(account.Role),
+		expiredAt,
+	)
+	if err != nil {
+		return nil, fault.ErrUndefined
+	}
+	return &model.Session{
+		Token: &token,
+	}, nil
+}
 
 // Restaurant is the resolver for the restaurant field.
 func (r *queryResolver) Restaurant(ctx context.Context, id string) (*model.Restaurant, error) {
@@ -35,7 +63,21 @@ func (r *queryResolver) Table(ctx context.Context, id string) (*model.Table, err
 	return &t, nil
 }
 
+// Item is the resolver for the item field.
+func (r *queryResolver) Item(ctx context.Context, id string) (*model.Item, error) {
+	var item restaurantModel.Item
+	db.Where("id = ?", utils.StringToUint(id)).Find(&item)
+	// item := restaurantModel.FindItem(id)
+	fmt.Println(item)
+	// item, err :=
+	return nil, nil
+}
+
+// Mutation returns MutationResolver implementation.
+func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
+
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

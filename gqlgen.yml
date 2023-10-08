@@ -89,3 +89,5 @@ models:
     model: github.com/Dparty/ordering-graphql/graph/model.Restaurant
   Table:
     model: github.com/Dparty/ordering-graphql/graph/model.Table
+  Item:
+    model: github.com/Dparty/ordering-graphql/graph/model.Item

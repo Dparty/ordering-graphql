@@ -5,13 +5,23 @@
 type Query {
   restaurant(id: ID!): Restaurant
   table(id: ID!): Table
+  item(id: ID!): Item
+}
+
+type Mutation {
+  createSession(email: String!, password: String!): Session
+}
+
+type Session {
+  token: String
 }
 
 type Restaurant {
   id: ID!
   name: String!
   description: String!
-  tables: [Table!]!
+  tables: [Table]
+  items: [Item]
 }
 
 type Table {
@@ -20,22 +30,8 @@ type Table {
   restaurant: Restaurant!
 }
 
-# type Item {
-#   id: ID!
-#   name: String!
-#   pricing: Int!
-#   attributes: [Attribute!]!
-#   images: [String!]!
-#   printers: [String!]!
-#   restaurant: Restaurant!
-# }
-
-# type Attribute {
-#   label: String!
-#   options: [Option!]!
-# }
-
-# type Option {
-#   label: String!
-#   extra: Int!
-# }
+type Item {
+  id: ID!
+  name: String!
+  pricing: Int!
+}

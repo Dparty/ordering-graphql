@@ -5,8 +5,9 @@ import (
 )
 
 type Table struct {
-	ID    string `json:"id"`
-	Label string `json:"label"`
+	ID           string `json:"id"`
+	Label        string `json:"label"`
+	RestaurantId uint   `json:"restaurantId"`
 }
 
 func (t *Table) Restaurant() Restaurant {
