@@ -74,8 +74,6 @@ autobind:
 # modelgen, the others will be allowed when binding to fields. Configure them to
 # your liking
 models:
-  Item:
-    model: "github.com/Dparty/ordering-graphql/graph/model.Item"
   ID:
     model:
       - github.com/99designs/gqlgen/graphql.ID
@@ -87,3 +85,7 @@ models:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
+  Restaurant:
+    model: github.com/Dparty/ordering-graphql/graph/model.Restaurant
+  Table:
+    model: github.com/Dparty/ordering-graphql/graph/model.Table

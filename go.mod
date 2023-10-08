@@ -5,7 +5,7 @@ go 1.21.1
 require (
 	github.com/99designs/gqlgen v0.17.39
 	github.com/Dparty/common v0.0.0-20230929033726-ff769bca8c94
-	github.com/Dparty/model v0.0.0-20231007011052-9eaa02ef76dd
+	github.com/Dparty/model v0.0.0-20231008073131-0ca596e48fb0
 	github.com/spf13/viper v1.17.0
 	github.com/vektah/gqlparser/v2 v2.5.10
 	gorm.io/gorm v1.25.4
