@@ -14,6 +14,7 @@ import (
 	coreModel "github.com/Dparty/model/core"
 	restaurantModel "github.com/Dparty/model/restaurant"
 	"github.com/Dparty/ordering-graphql/graph/model"
+	"github.com/Dparty/ordering-graphql/middleware"
 )
 
 // CreateSession is the resolver for the createSession field.
@@ -38,6 +39,13 @@ func (r *mutationResolver) CreateSession(ctx context.Context, email string, pass
 	return &model.Session{
 		Token: &token,
 	}, nil
+}
+
+// CreateRestaurant is the resolver for the createRestaurant field.
+func (r *mutationResolver) CreateRestaurant(ctx context.Context, input model.RestaurantInput) (*model.Restaurant, error) {
+	account := ctx.Value(middleware.UserCtxKey).(coreModel.Account)
+	restaurant := model.Convert(restaurantModel.CreateRestaurant(account.ID, input.Name, input.Description)).(model.Restaurant)
+	return &restaurant, nil
 }
 
 // Restaurant is the resolver for the restaurant field.

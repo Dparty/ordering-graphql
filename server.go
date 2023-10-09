@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,34 +9,14 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/Dparty/common/utils"
 	"github.com/Dparty/model"
-	coreModel "github.com/Dparty/model/core"
 	"github.com/Dparty/ordering-graphql/graph"
+	"github.com/Dparty/ordering-graphql/middleware"
 	"github.com/go-chi/chi"
 	"github.com/spf13/viper"
 )
 
 const defaultPort = "8080"
-
-var userCtxKey = &contextKey{"user"}
-
-type contextKey struct {
-	name string
-}
-
-func middleware() func(http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			authorization := r.Header.Get("Authorization")
-			claims, _ := utils.VerifyJwt(authorization)
-			account, _ := coreModel.FindAccount(utils.StringToUint(claims["id"].(string)))
-			ctx := context.WithValue(r.Context(), userCtxKey, account)
-			r = r.WithContext(ctx)
-			next.ServeHTTP(w, r)
-		})
-	}
-}
 
 func main() {
 	var err error
@@ -64,7 +43,7 @@ func main() {
 		port = defaultPort
 	}
 	router := chi.NewRouter()
-	router.Use(middleware())
+	router.Use(middleware.Middleware())
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 	srv.AddTransport(&transport.Websocket{})

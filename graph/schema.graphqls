@@ -10,6 +10,17 @@ type Query {
 
 type Mutation {
   createSession(email: String!, password: String!): Session
+  createRestaurant(input: RestaurantInput!): Restaurant
+}
+
+input RestaurantInput {
+  name: String!
+  description: String!
+}
+
+input ItemInput {
+  name: String!
+  pricing: Int!
 }
 
 type Session {

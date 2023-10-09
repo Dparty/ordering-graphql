@@ -2,6 +2,16 @@
 
 package model
 
+type ItemInput struct {
+	Name    string `json:"name"`
+	Pricing int    `json:"pricing"`
+}
+
+type RestaurantInput struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
 type Session struct {
 	Token *string `json:"token,omitempty"`
 }
