@@ -3,7 +3,9 @@
 # https://gqlgen.com/getting-started/
 
 type Query {
+  user: User
   restaurant(id: ID!): Restaurant
+  restaurants: [Restaurant!]!
   table(id: ID!): Table
   item(id: ID!): Item
 }
@@ -11,16 +13,35 @@ type Query {
 type Mutation {
   createSession(email: String!, password: String!): Session
   createRestaurant(input: RestaurantInput!): Restaurant
+  createItem(restaurantId: ID!, input: ItemInput!): Item
+}
+
+type User {
+  id: ID!
+  email: String
+  restaurants: [Restaurant!]!
 }
 
 input RestaurantInput {
-  name: String!
+  name: String
   description: String!
 }
 
 input ItemInput {
   name: String!
   pricing: Int!
+  attributes: [AttributeInput]
+  tags: [String!]
+}
+
+input AttributeInput {
+  label: String!
+  options: [OptionInput!]!
+}
+
+input OptionInput {
+  label: String!
+  extra: Int!
 }
 
 type Session {
@@ -29,10 +50,11 @@ type Session {
 
 type Restaurant {
   id: ID!
+  owner: User
   name: String!
   description: String!
-  tables: [Table]
-  items: [Item]
+  tables: [Table!]!
+  items: [Item!]!
 }
 
 type Table {
@@ -45,4 +67,16 @@ type Item {
   id: ID!
   name: String!
   pricing: Int!
+  attributes: [Attribute]
+  tags: [String]
+}
+
+type Attribute {
+  label: String!
+  options: [Option!]!
+}
+
+type Option {
+  label: String!
+  extra: Int!
 }

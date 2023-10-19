@@ -5,7 +5,8 @@ go 1.21.1
 require (
 	github.com/99designs/gqlgen v0.17.39
 	github.com/Dparty/common v0.0.0-20230929033726-ff769bca8c94
-	github.com/Dparty/model v0.0.0-20231008080328-f0b146d3a304
+	github.com/Dparty/model v0.0.0-20231014103459-a5219a468cdf
+	github.com/chenyunda218/golambda v0.0.0-20230809035428-25245dc9a8bd
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-chi/chi v1.5.5
 	github.com/spf13/viper v1.17.0

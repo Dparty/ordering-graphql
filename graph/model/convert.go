@@ -2,7 +2,9 @@ package model
 
 import (
 	"github.com/Dparty/common/utils"
+	"github.com/Dparty/model/core"
 	model "github.com/Dparty/model/restaurant"
+	"github.com/chenyunda218/golambda"
 )
 
 func Convert(from any) any {
@@ -14,7 +16,20 @@ func Convert(from any) any {
 	case model.Restaurant:
 		return RestaurantBackward(m)
 	}
-	return ""
+	return nil
+}
+
+func UserBackward(user core.Account) User {
+	return User{
+		ID:    golambda.Reference(utils.UintToString(user.ID())),
+		Email: &user.Email,
+	}
+}
+
+func ItemInputConvert(input ItemInput) model.Item {
+	return model.Item{
+		Name: input.Name,
+	}
 }
 
 func RestaurantBackward(restaurant model.Restaurant) Restaurant {
@@ -39,4 +54,12 @@ func TableForward(table Table) model.Table {
 	}
 	t.ID = utils.StringToUint(table.ID)
 	return t
+}
+
+func ItemBackward(item model.Item) Item {
+	var i Item
+	i.ID = utils.UintToString(item.ID)
+	i.Name = item.Name
+	i.Pricing = int(item.Pricing)
+	return i
 }

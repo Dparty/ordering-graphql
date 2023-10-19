@@ -42,8 +42,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/Dparty/common v0.0.0-20230929033726-ff769bca8c94 h1:YYt8QQbi9RQB+0GDuL7DzFiOp/3W7mxq63Jvtq6LP5M=
 github.com/Dparty/common v0.0.0-20230929033726-ff769bca8c94/go.mod h1:sY807DCbNdj2+kTNspZcO7/X1zJBmTmxy5TSQA7+lL8=
-github.com/Dparty/model v0.0.0-20231008080328-f0b146d3a304 h1:KktXoKDFCGpVrDMDW4MWTAyxGd21HslC8L07MX9pQLQ=
-github.com/Dparty/model v0.0.0-20231008080328-f0b146d3a304/go.mod h1:d8KReUG9UUAfjpUuDoTizJacdR9Upui6ZVmTsVSIJIM=
+github.com/Dparty/model v0.0.0-20231014103459-a5219a468cdf h1:NvM8pWAleiYh5Rlu/9X1Dbw6fojkh4bmivmI6hngIDY=
+github.com/Dparty/model v0.0.0-20231014103459-a5219a468cdf/go.mod h1:d8KReUG9UUAfjpUuDoTizJacdR9Upui6ZVmTsVSIJIM=
 github.com/agnivade/levenshtein v1.1.1 h1:QY8M92nrzkmr798gCo3kmMyqXFzdQVpxLlGPRBij0P8=
 github.com/agnivade/levenshtein v1.1.1/go.mod h1:veldBMzWxcCG2ZvUTKD2kJNRdCk5hVbJomOvKkmgYbo=
 github.com/andreyvit/diff v0.0.0-20170406064948-c7f18ee00883 h1:bvNMNQO63//z+xNgfBlViaCIJKLlCJ6/fmUseuG0wVQ=
@@ -57,6 +57,8 @@ github.com/bytedance/sonic v1.10.0-rc/go.mod h1:ElCzW+ufi8qKqNW0FY314xriJhyJhuoJ
 github.com/bytedance/sonic v1.10.0-rc2 h1:oDfRZ+4m6AYCOC0GFeOCeYqvBmucy1isvouS2K0cPzo=
 github.com/bytedance/sonic v1.10.0-rc2/go.mod h1:iZcSUejdk5aukTND/Eu/ivjQuEL0Cu9/rf50Hi0u/g4=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
+github.com/chenyunda218/golambda v0.0.0-20230809035428-25245dc9a8bd h1:qhuThxoSN7lTgesIpUEMskgPdUCXx4UFoIQ0ORzZKMU=
+github.com/chenyunda218/golambda v0.0.0-20230809035428-25245dc9a8bd/go.mod h1:y5nsHMdGETgO/+pFm3NOsQ8eNfsUheNNcqE3DeQZdiQ=
 github.com/chenzhuoyu/base64x v0.0.0-20211019084208-fb5309c8db06/go.mod h1:DH46F32mSOjUmXrMHnKwZdA8wcEefY7UVqBKYGjpdQY=
 github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311/go.mod h1:b583jCggY9gE99b6G5LEC39OIiVsWj+R97kbl5odCEk=
 github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d h1:77cEq6EriyTZ0g/qfRdp61a3Uu/AWrgIq2s0ClJV1g0=

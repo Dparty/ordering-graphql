@@ -29,7 +29,7 @@ func Middleware() func(http.Handler) http.Handler {
 				next.ServeHTTP(w, r)
 				return
 			}
-			account, _ := coreModel.FindAccount(utils.StringToUint(claims["id"].(string)))
+			account, _ := coreModel.Find(utils.StringToUint(claims["id"].(string)))
 			ctx := context.WithValue(r.Context(), UserCtxKey, account)
 			r = r.WithContext(ctx)
 			next.ServeHTTP(w, r)

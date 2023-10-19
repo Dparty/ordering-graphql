@@ -2,14 +2,36 @@
 
 package model
 
+type Attribute struct {
+	Label   string    `json:"label"`
+	Options []*Option `json:"options"`
+}
+
+type AttributeInput struct {
+	Label   string         `json:"label"`
+	Options []*OptionInput `json:"options"`
+}
+
 type ItemInput struct {
-	Name    string `json:"name"`
-	Pricing int    `json:"pricing"`
+	Name       string            `json:"name"`
+	Pricing    int               `json:"pricing"`
+	Attributes []*AttributeInput `json:"attributes,omitempty"`
+	Tags       []string          `json:"tags,omitempty"`
+}
+
+type Option struct {
+	Label string `json:"label"`
+	Extra int    `json:"extra"`
+}
+
+type OptionInput struct {
+	Label string `json:"label"`
+	Extra int    `json:"extra"`
 }
 
 type RestaurantInput struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
+	Name        *string `json:"name,omitempty"`
+	Description string  `json:"description"`
 }
 
 type Session struct {

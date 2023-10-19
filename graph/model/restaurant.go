@@ -1,7 +1,8 @@
 package model
 
 import (
-	model "github.com/Dparty/model/restaurant"
+	"github.com/Dparty/common/utils"
+	restaurantModel "github.com/Dparty/model/restaurant"
 )
 
 type Restaurant struct {
@@ -11,8 +12,14 @@ type Restaurant struct {
 	RestaurantId uint   `json:"restaurantId"`
 }
 
+func (r *Restaurant) Entity() restaurantModel.Restaurant {
+	var restaurant restaurantModel.Restaurant
+	db.Find(&restaurant, utils.StringToUint(r.ID))
+	return restaurant
+}
+
 func (r *Restaurant) Tables() []*Table {
-	var ts []model.Table
+	var ts []restaurantModel.Table
 	db.Find(&ts, "restaurant_id = ?", r.ID)
 	var tables []*Table
 	for _, t := range ts {
@@ -24,4 +31,8 @@ func (r *Restaurant) Tables() []*Table {
 
 func (r *Restaurant) Items() []Item {
 	return []Item{}
+}
+
+func (r *Restaurant) Owner() User {
+	return UserBackward(r.Entity().Owner())
 }

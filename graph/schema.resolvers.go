@@ -11,11 +11,23 @@ import (
 
 	"github.com/Dparty/common/fault"
 	"github.com/Dparty/common/utils"
+	m "github.com/Dparty/model"
 	coreModel "github.com/Dparty/model/core"
 	restaurantModel "github.com/Dparty/model/restaurant"
 	"github.com/Dparty/ordering-graphql/graph/model"
 	"github.com/Dparty/ordering-graphql/middleware"
+	"github.com/chenyunda218/golambda"
 )
+
+// Attributes is the resolver for the attributes field.
+func (r *itemResolver) Attributes(ctx context.Context, obj *model.Item) ([]*model.Attribute, error) {
+	panic(fmt.Errorf("not implemented: Attributes - attributes"))
+}
+
+// Tags is the resolver for the tags field.
+func (r *itemResolver) Tags(ctx context.Context, obj *model.Item) ([]*string, error) {
+	panic(fmt.Errorf("not implemented: Tags - tags"))
+}
 
 // CreateSession is the resolver for the createSession field.
 func (r *mutationResolver) CreateSession(ctx context.Context, email string, password string) (*model.Session, error) {
@@ -28,7 +40,7 @@ func (r *mutationResolver) CreateSession(ctx context.Context, email string, pass
 	}
 	expiredAt := time.Now().AddDate(0, 0, 7).Unix()
 	token, err := utils.SignJwt(
-		utils.UintToString(account.ID),
+		utils.UintToString(account.ID()),
 		account.Email,
 		string(account.Role),
 		expiredAt,
@@ -43,22 +55,80 @@ func (r *mutationResolver) CreateSession(ctx context.Context, email string, pass
 
 // CreateRestaurant is the resolver for the createRestaurant field.
 func (r *mutationResolver) CreateRestaurant(ctx context.Context, input model.RestaurantInput) (*model.Restaurant, error) {
-	account := ctx.Value(middleware.UserCtxKey).(coreModel.Account)
-	restaurant := model.Convert(restaurantModel.CreateRestaurant(account.ID, input.Name, input.Description)).(model.Restaurant)
+	account, ok := ctx.Value(middleware.UserCtxKey).(coreModel.Account)
+	if !ok {
+		return nil, fault.ErrUnauthorized
+	}
+	restaurant := model.Convert(restaurantModel.CreateRestaurant(account.ID(), *input.Name, input.Description)).(model.Restaurant)
 	return &restaurant, nil
+}
+
+// CreateItem is the resolver for the createItem field.
+func (r *mutationResolver) CreateItem(ctx context.Context, restaurantID string, input model.ItemInput) (*model.Item, error) {
+	account, ok := ctx.Value(middleware.UserCtxKey).(coreModel.Account)
+	if !ok {
+		return nil, fault.ErrUnauthorized
+	}
+
+	restaurant, _ := m.Find(&restaurantModel.Restaurant{}, utils.StringToUint(restaurantID))
+	if account.ID() != restaurant.Owner().ID() {
+		return nil, fault.ErrPermissionDenied
+	}
+	var item restaurantModel.Item
+	item.Name = input.Name
+	item.Pricing = int64(input.Pricing)
+	item.Tags = input.Tags
+	for _, attr := range input.Attributes {
+		attribute := restaurantModel.Attribute{
+			Label: attr.Label,
+		}
+		for _, option := range attr.Options {
+			attribute.Options = append(attribute.Options, restaurantModel.Option{
+				Label: option.Label,
+				Extra: int64(option.Extra),
+			})
+		}
+		item.Attributes = append(item.Attributes, attribute)
+	}
+	i := model.ItemBackward(restaurant.AddItem(item))
+	return &i, nil
+}
+
+// User is the resolver for the user field.
+func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
+	account, ok := ctx.Value(middleware.UserCtxKey).(coreModel.Account)
+	if !ok {
+		return nil, fault.ErrUnauthorized
+	}
+	id := utils.UintToString(account.ID())
+	return &model.User{
+		ID:    &id,
+		Email: &account.Email,
+	}, nil
 }
 
 // Restaurant is the resolver for the restaurant field.
 func (r *queryResolver) Restaurant(ctx context.Context, id string) (*model.Restaurant, error) {
 	restaurant := restaurantModel.FindRestaurant(utils.StringToUint(id))
-	if restaurant == nil {
-		return nil, nil
-	}
 	return &model.Restaurant{
 		ID:          utils.UintToString(restaurant.ID),
 		Name:        restaurant.Name,
 		Description: restaurant.Description,
 	}, nil
+}
+
+// Restaurants is the resolver for the restaurants field.
+func (r *queryResolver) Restaurants(ctx context.Context) ([]*model.Restaurant, error) {
+	account, ok := ctx.Value(middleware.UserCtxKey).(coreModel.Account)
+	if !ok {
+		return nil, fault.ErrUnauthorized
+	}
+	var restaurants []restaurantModel.Restaurant
+	db.Find(&restaurants, "account_id = ?", account.ID())
+	return golambda.Map(restaurants, func(_ int, restaurant restaurantModel.Restaurant) *model.Restaurant {
+		g := model.RestaurantBackward(restaurant)
+		return &g
+	}), nil
 }
 
 // Table is the resolver for the table field.
@@ -81,11 +151,15 @@ func (r *queryResolver) Item(ctx context.Context, id string) (*model.Item, error
 	return nil, nil
 }
 
+// Item returns ItemResolver implementation.
+func (r *Resolver) Item() ItemResolver { return &itemResolver{r} }
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+type itemResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

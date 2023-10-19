@@ -12,5 +12,5 @@ type Table struct {
 
 func (t *Table) Restaurant() Restaurant {
 	restaurant := model.FindRestaurant(t.ID)
-	return Convert(*restaurant).(Restaurant)
+	return Convert(restaurant).(Restaurant)
 }
